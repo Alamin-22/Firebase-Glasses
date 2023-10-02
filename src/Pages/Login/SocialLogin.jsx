@@ -1,18 +1,23 @@
 import { useContext } from "react";
 import { AuthContext } from "../../Provider/AuthProvider";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const SocialLogin = () => {
-    const {handleGoogleLogin}= useContext(AuthContext)
+    const {handleGoogleLogin, handleGitHubLogin}= useContext(AuthContext)
     // console.log(handleGoogleLogin);
+    const navigate= useNavigate();
 
 
 
     const handleSocialLogIn=(media)=>{
         media()
-        .then(response=>{
-            console.log(response.user)
+        .then(() => {
+            toast.success("User Logged In Successfully")
+            navigate("/")
         })
-        .catch(error=>{
+        .catch(error => {
+            toast.error(error.message)
             console.log(error)
         })
 
@@ -22,8 +27,9 @@ const SocialLogin = () => {
     return (
         <>
             <div className="divider">continue with</div>
-            <div className="">
+            <div className=" flex justify-evenly">
                 <button onClick={()=>handleSocialLogIn(handleGoogleLogin)} className="btn btn-neutral btn-sm  btn-outline">Google</button>
+                <button onClick={()=>handleSocialLogIn(handleGitHubLogin)} className="btn btn-neutral btn-sm  btn-outline normal-case">GitHub</button>
             </div>
         </>
     );
